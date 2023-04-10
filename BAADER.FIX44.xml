@@ -1609,10 +1609,11 @@
     <field name="CrossID" required="Y"/>
     <field name="CrossType" required="Y"/>
     <field name="CrossPrioritization" required="Y"/>
+     <field name="CustomField" required="Y"/>
     <group name="NoSides" required="Y">
       <field name="Side" required="Y"/>
       <field name="ClOrdID" required="Y"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="SecondaryClOrdID" required="N"/>
       <field name="ClOrdLinkID" required="N"/>
       <component name="Parties" required="N"/>
@@ -1707,11 +1708,12 @@
     <field name="OrigCrossID" required="Y"/>
     <field name="CrossType" required="Y"/>
     <field name="CrossPrioritization" required="Y"/>
+     <field name="CustomField" required="Y"/>
     <group name="NoSides" required="Y">
       <field name="Side" required="Y"/>
       <field name="OrigClOrdID" required="Y"/>
       <field name="ClOrdID" required="Y"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="SecondaryClOrdID" required="N"/>
       <field name="ClOrdLinkID" required="N"/>
       <field name="OrigOrdModTime" required="N"/>
@@ -1807,11 +1809,12 @@
     <field name="OrigCrossID" required="Y"/>
     <field name="CrossType" required="Y"/>
     <field name="CrossPrioritization" required="Y"/>
+     <field name="CustomField" required="Y"/>
     <group name="NoSides" required="Y">
       <field name="Side" required="Y"/>
       <field name="OrigClOrdID" required="Y"/>
       <field name="ClOrdID" required="Y"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="SecondaryClOrdID" required="N"/>
       <field name="ClOrdLinkID" required="N"/>
       <field name="OrigOrdModTime" required="N"/>
@@ -2141,9 +2144,10 @@
     <field name="AllowableOneSidednessCurr" required="N"/>
     <field name="TotNoOrders" required="Y"/>
     <field name="LastFragment" required="N"/>
+     <field name="CustomField" required="Y"/>
     <group name="NoOrders" required="Y">
       <field name="ClOrdID" required="Y"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="SecondaryClOrdID" required="N"/>
       <field name="ListSeqNo" required="Y"/>
       <field name="ClOrdLinkID" required="N"/>
@@ -2236,6 +2240,7 @@
     <field name="ListID" required="Y"/>
     <field name="TotNoStrikes" required="Y"/>
     <field name="LastFragment" required="N"/>
+     <field name="CustomField" required="Y"/>
     <group name="NoStrikes" required="Y">
       <component name="Instrument" required="Y"/>
     </group>
@@ -2243,7 +2248,7 @@
       <component name="UnderlyingInstrument" required="N"/>
       <field name="PrevClosePx" required="N"/>
       <field name="ClOrdID" required="N"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="SecondaryClOrdID" required="N"/>
       <field name="Side" required="N"/>
       <field name="Price" required="Y"/>
@@ -2265,9 +2270,10 @@
     <field name="TransactTime" required="N"/>
     <field name="TotNoOrders" required="Y"/>
     <field name="LastFragment" required="N"/>
+     <field name="CustomField" required="Y"/>
     <group name="NoOrders" required="Y">
       <field name="ClOrdID" required="Y"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="SecondaryClOrdID" required="N"/>
       <field name="CumQty" required="Y"/>
       <field name="OrdStatus" required="Y"/>
@@ -2317,9 +2323,10 @@
     <field name="AllocLinkType" required="N"/>
     <field name="BookingRefID" required="N"/>
     <field name="AllocNoOrdersType" required="Y"/>
+    <field name="CustomField" required="Y"/>
     <group name="NoOrders" required="N">
       <field name="ClOrdID" required="N"/>
-      <field name="CustomField" required="Y"/>
+      
       <field name="OrderID" required="N"/>
       <field name="SecondaryOrderID" required="N"/>
       <field name="SecondaryClOrdID" required="N"/>
@@ -2473,9 +2480,10 @@
     <field name="AllocLinkType" required="N"/>
     <field name="BookingRefID" required="N"/>
     <field name="AllocNoOrdersType" required="Y"/>
+    <field name="CustomField" required="Y"/>
     <group name="NoOrders" required="N">
       <field name="ClOrdID" required="N"/>
-      <field name="CustomField" required="Y"/>
+      
       <field name="OrderID" required="N"/>
       <field name="SecondaryOrderID" required="N"/>
       <field name="SecondaryClOrdID" required="N"/>
@@ -2622,10 +2630,11 @@
     <field name="CopyMsgIndicator" required="N"/>
     <field name="LegalConfirm" required="N"/>
     <field name="ConfirmStatus" required="Y"/>
+     <field name="CustomField" required="Y"/>
     <component name="Parties" required="N"/>
     <group name="NoOrders" required="N">
       <field name="ClOrdID" required="N"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="OrderID" required="N"/>
       <field name="SecondaryOrderID" required="N"/>
       <field name="SecondaryClOrdID" required="N"/>
@@ -2718,9 +2727,10 @@
   <message name="ConfirmationRequest" msgtype="BH" msgcat="app">
     <field name="ConfirmReqID" required="Y"/>
     <field name="ConfirmType" required="Y"/>
+     <field name="CustomField" required="Y"/>
     <group name="NoOrders" required="N">
       <field name="ClOrdID" required="N"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="OrderID" required="N"/>
       <field name="SecondaryOrderID" required="N"/>
       <field name="SecondaryClOrdID" required="N"/>
@@ -2930,12 +2940,13 @@
     <field name="SettlDate" required="N"/>
     <field name="MatchStatus" required="N"/>
     <field name="MatchType" required="N"/>
+     <field name="CustomField" required="Y"/>
     <group name="NoSides" required="Y">
       <field name="Side" required="Y"/>
       <field name="OrderID" required="Y"/>
       <field name="SecondaryOrderID" required="N"/>
       <field name="ClOrdID" required="N"/>
-      <field name="CustomField" required="Y"/>
+     
       <field name="SecondaryClOrdID" required="N"/>
       <field name="ListID" required="N"/>
       <component name="Parties" required="N"/>

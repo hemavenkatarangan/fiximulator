@@ -24,6 +24,15 @@ public class Execution implements Cloneable {
 	private double cumQty = 0.0;
 	private double avgPx = 0.0;
 	private String symbol =null;
+	private String custField = null;
+
+	public String getCustField() {
+		return custField;
+	}
+
+	public void setCustField(String custField) {
+		this.custField = custField;
+	}
 
 	@Override
 	public Execution clone() {

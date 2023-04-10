@@ -24,6 +24,7 @@ import java.util.TimeZone;
 import javax.swing.JLabel;
 
 import quickfix.Application;
+import quickfix.ConfigError;
 import quickfix.DataDictionary;
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
@@ -108,7 +109,7 @@ public class FIXimulatorApplication extends CustomMessageCracker implements Appl
 	}
 
 	public void onLogon(SessionID sessionID) {
-		System.out.println("Connecting with target.... ");
+		System.out.println("Connected with target.... ");
 		connected = true;
 		currentSession = sessionID;
 		dictionary = Session.lookupSession(currentSession).getDataDictionary();
@@ -371,17 +372,24 @@ public class FIXimulatorApplication extends CustomMessageCracker implements Appl
    
 	public void fromApp(Message message, SessionID sessionID)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
+		System.out.println("Recd message");
+		
+		
 		messages.add(message, true, dictionary, sessionID);
 		crack(message, sessionID);
 	}
 
 	public void toApp(Message message, SessionID sessionID) throws DoNotSend {
-		try {
+		
 			messages.add(message, false, dictionary, sessionID);
-			crack(message, sessionID);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			
+			try {
+				crack(message, sessionID);
+			} catch (UnsupportedMessageType | FieldNotFound | IncorrectTagValue e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 	}
     
 	public void fromAdmin(Message message, SessionID sessionID)
@@ -822,11 +830,11 @@ public class FIXimulatorApplication extends CustomMessageCracker implements Appl
 		// AvgPx ()
 		AvgPx avgPx = new AvgPx(execution.getAvgPx());
 		
-		
+		CustomField custField = new CustomField(execution.getOrder().getCustomField());
 
 		// Construct Execution Report from required fields
-		quickfix.fix44.ExecutionReport executionReport = new quickfix.fix44.ExecutionReport(orderID, execID,
-				 execType, ordStatus,  side, leavesQty, cumQty, avgPx);
+		CustomExecutionReport executionReport = new CustomExecutionReport(orderID, execID,
+				 execType, ordStatus,  side, leavesQty, cumQty, avgPx,custField);
 
 		// *** Conditional fields ***
 		if (execution.getRefID() != null) {
