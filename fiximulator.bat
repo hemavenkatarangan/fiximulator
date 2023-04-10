@@ -1,4 +1,4 @@
 @echo off
 
 
-java -jar dist/FIXimulator_0.41.jar
+java -jar target/FIXimulator-1.0.0.jar
