@@ -10,65 +10,20 @@
 
 package edu.harvard.fas.zfeledy.fiximulator.core;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import quickfix.*;
+import quickfix.field.*;
+import quickfix.fix42.Message.Header;
+import quickfix.fix44.IndicationOfInterest;
+import quickfix.fix44.NewOrderSingle;
+
+import javax.swing.*;
+import java.io.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Random;
 import java.util.TimeZone;
-
-import javax.swing.JLabel;
-
-import quickfix.Application;
-import quickfix.ConfigError;
-import quickfix.DataDictionary;
-import quickfix.DoNotSend;
-import quickfix.FieldNotFound;
-import quickfix.IncorrectDataFormat;
-import quickfix.IncorrectTagValue;
-import quickfix.Message;
-import quickfix.RejectLogon;
-import quickfix.Session;
-import quickfix.SessionID;
-import quickfix.SessionNotFound;
-import quickfix.SessionSettings;
-import quickfix.UnsupportedMessageType;
-import quickfix.field.AvgPx;
-import quickfix.field.ClOrdID;
-import quickfix.field.CumQty;
-import quickfix.field.Currency;
-import quickfix.field.CxlRejResponseTo;
-import quickfix.field.ExecID;
-import quickfix.field.ExecRefID;
-import quickfix.field.ExecTransType;
-import quickfix.field.ExecType;
-import quickfix.field.IDSource;
-import quickfix.field.IOIID;
-import quickfix.field.IOINaturalFlag;
-import quickfix.field.IOIRefID;
-import quickfix.field.IOIShares;
-import quickfix.field.IOITransType;
-import quickfix.field.LastPx;
-import quickfix.field.LeavesQty;
-import quickfix.field.OnBehalfOfCompID;
-import quickfix.field.OnBehalfOfSubID;
-import quickfix.field.OrdStatus;
-import quickfix.field.OrderID;
-import quickfix.field.OrderQty;
-import quickfix.field.OrigClOrdID;
-import quickfix.field.Price;
-import quickfix.field.SecurityDesc;
-import quickfix.field.SecurityID;
-import quickfix.field.Side;
-import quickfix.field.Symbol;
-import quickfix.field.ValidUntilTime;
-import quickfix.fix42.Message.Header;
-import quickfix.fix44.IndicationOfInterest;
-import quickfix.fix44.NewOrderSingle;
+import java.util.concurrent.TimeUnit;
 
 public class FIXimulatorApplication extends CustomMessageCracker implements Application {
 	private boolean connected;
@@ -140,7 +95,8 @@ public class FIXimulatorApplication extends CustomMessageCracker implements Appl
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		System.out.println("Received Custom New order");
 		Order order = new Order(message);
-		
+
+		int secondstoDelay=0;
 		order.setReceivedOrder(true);
 		if (executorStarted) {
 			orders.add(order, true);
@@ -152,27 +108,38 @@ public class FIXimulatorApplication extends CustomMessageCracker implements Appl
 			try {
 				autoAck = settings.getBool("FIXimulatorAutoAcknowledge");
 				uiEnabled = settings.getBool("UiEnabled");
+				secondstoDelay=settings.getInt("DelayInSeconds");
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			if (autoAck) {
 				acknowledge(order);
-				
+
 			}
 			if(!uiEnabled)
 			{
+				delay(secondstoDelay);
 				autoPendingNew(order);
+				delay(secondstoDelay);
 				autoExecute(order);
+				delay(secondstoDelay);
 				dfd(order);
-				
+
 			}
-		
+
 		}
 	}
+	private void delay(int i) {
+		try {
+			TimeUnit.SECONDS.sleep(i);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 
+	}
 	
 	private void autoExecute(Order order) {
 		//Execute auto
-		Order currentOrder = order;
 		int partials = 1;
 		double fillQty = Math.floor(order.getQuantity() / partials);
 		double fillPrice = 0.0;
@@ -215,6 +182,8 @@ public class FIXimulatorApplication extends CustomMessageCracker implements Appl
 					try {
 						pricePrecision = (int) settings.getLong("FIXimulatorPricePrecision");
 					} catch (Exception e) {
+						System.out.println("Error in setting price precision");
+						e.printStackTrace();
 					}
 					double factor = Math.pow(10, pricePrecision);
 					fillPrice = Math.round(fillPrice * factor) / factor;
@@ -250,6 +219,7 @@ public class FIXimulatorApplication extends CustomMessageCracker implements Appl
 					try {
 						pricePrecision = (int) settings.getLong("FIXimulatorPricePrecision");
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
 					double factor = Math.pow(10, pricePrecision);
 					fillPrice = Math.round(fillPrice * factor) / factor;
@@ -952,7 +922,7 @@ public class FIXimulatorApplication extends CustomMessageCracker implements Appl
 				ioi.setSide("SELL");
 
 			// IOIShares
-			Integer quantity = new Integer(random.nextInt(1000) * 100 + 100);
+			Integer quantity = random.nextInt(1000) * 100 + 100;
 			ioi.setQuantity(quantity);
 
 			// Symbol
